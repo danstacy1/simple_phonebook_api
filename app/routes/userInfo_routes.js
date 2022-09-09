@@ -48,7 +48,7 @@ router.get('/userInfo', (req, res, next) => {
 // GET /userInfo/5a7db6c74d55bc51bdf39793
 router.get('/userInfo/:id', (req, res, next) => {
 	// req.params.id will be set based on the `:id` in the route
-	UserInfo.findById(req.params.id)
+	UserInfo.findById(req.params._id)
 		.populate('owner')
 		.then(handle404)
 		// if `findById` is succesful, respond with 200 and "userInfo" JSON
@@ -61,7 +61,7 @@ router.get('/userInfo/:id', (req, res, next) => {
 // POST /userInfo
 router.post('/userInfo', requireToken, (req, res, next) => {
 	// set owner of new userInfo to be current user
-	req.body.userInfo.owner = req.user.id
+	req.body.userInfo.owner = req.user._id
 
 	UserInfo.create(req.body.userInfo)
 		// respond to succesful `create` with status 201 and JSON of new "userInfo"
