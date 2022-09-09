@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const { Schema, model } = mongoose
-const phonebookSchema = new Schema(
+const userInfoSchema = new Schema(
     {
         firstName: {
             type: String,
@@ -24,8 +24,8 @@ const phonebookSchema = new Schema(
 )
 
 // virtuals go here
-phonebookSchema.virtual('fullTitle').get(function () {
+userInfoSchema.virtual('fullTitle').get(function () {
     return `${this.firstName} ${this.lastName} ${this.phoneNumber}`
 })
 
-module.exports = model('Phonebook', phonebookSchema)
+module.exports = model('UserInfo', userInfoSchema)
