@@ -32,21 +32,21 @@ const router = express.Router()
 router.get('/userInfo', (req, res, next) => {
 	UserInfo.find()
 		.populate('owner')
-		.then((userInfos) => {
-			// `userInfos` will be an array of Mongoose documents
+		.then((userInfo) => {
+			// `userInfo` will be an array of Mongoose documents
 			// we want to convert each one to a POJO, so we use `.map` to
 			// apply `.toObject` to each one
-			return userInfos.map((userInfo) => userInfo.toObject())
+			return userInfo.map((userInfo) => userInfo.toObject())
 		})
-		// respond with status 200 and JSON of the userInfos
-		.then((userInfos) => res.status(200).json({ userInfos: userInfos }))
+		// respond with status 200 and JSON of the userInfo
+		.then((userInfo) => res.status(200).json({ userInfo: userInfo }))
 		// if an error occurs, pass it to the handler
 		.catch(next)
 })
 
 // SHOW
-// GET /userInfos/5a7db6c74d55bc51bdf39793
-router.get('/userInfos/:id', (req, res, next) => {
+// GET /userInfo/5a7db6c74d55bc51bdf39793
+router.get('/userInfo/:id', (req, res, next) => {
 	// req.params.id will be set based on the `:id` in the route
 	UserInfo.findById(req.params.id)
 		.populate('owner')
@@ -58,8 +58,8 @@ router.get('/userInfos/:id', (req, res, next) => {
 })
 
 // CREATE
-// POST /userInfos
-router.post('/userInfos', requireToken, (req, res, next) => {
+// POST /userInfo
+router.post('/userInfo', requireToken, (req, res, next) => {
 	// set owner of new userInfo to be current user
 	req.body.userInfo.owner = req.user.id
 
@@ -75,8 +75,8 @@ router.post('/userInfos', requireToken, (req, res, next) => {
 })
 
 // UPDATE
-// PATCH /userInfos/5a7db6c74d55bc51bdf39793
-router.patch('/userInfos/:id', requireToken, removeBlanks, (req, res, next) => {
+// PATCH /userInfo/5a7db6c74d55bc51bdf39793
+router.patch('/userInfo/:id', requireToken, removeBlanks, (req, res, next) => {
 	// if the client attempts to change the `owner` property by including a new
 	// owner, prevent that by deleting that key/value pair
 	delete req.body.userInfo.owner
@@ -98,8 +98,8 @@ router.patch('/userInfos/:id', requireToken, removeBlanks, (req, res, next) => {
 })
 
 // DESTROY
-// DELETE /userInfos/5a7db6c74d55bc51bdf39793
-router.delete('/userInfos/:id', requireToken, (req, res, next) => {
+// DELETE /userInfo/5a7db6c74d55bc51bdf39793
+router.delete('/userInfo/:id', requireToken, (req, res, next) => {
 	UserInfo.findById(req.params.id)
 		.then(handle404)
 		.then((userInfo) => {
